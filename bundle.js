@@ -8119,6 +8119,21 @@ var outgoingLogger = document.querySelector("#outgoing");
 var myform = document.querySelector("form");
 var token = document.querySelector("#incoming");
 
+const configuration = {
+  iceServers: [
+    {
+      urls: "stun:stun.l.google.com:19302",
+    },
+    // public turn server from https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b
+    // set your own servers here
+    {
+      urls: ["turn:13.250.13.83:3478?transport=udp"],
+      username: "YzYNCouZM1mhqhmseWk6",
+      credential: "YzYNCouZM1mhqhmseWk6",
+    },
+  ],
+};
+
 navigator.mediaDevices
   .getUserMedia({
     video: true,
@@ -8133,6 +8148,7 @@ function addMedia(stream) {
   var peer = new Peer({
     initiator: location.hash === "#host", //true then signal is called automatically it's needed for host
     stream: stream,
+    config: configuration,
     trickle: false,
   });
   peer.on("signal", (data) => {
